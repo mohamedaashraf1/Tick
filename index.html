@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/svg+xml" href="icons/favicon-ttick.svg"/>
+    <title>TICK</title>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="wordmark">TICK<span>.</span></div>
+    <div class="header-meta">
+      <div class="date-display" id="dateDisplay"></div>
+      <div class="date-display" id="dayDisplay"></div>
+    </div>
+  </header>
+
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-label">Total</div>
+      <div class="stat-value" id="statTotal">0</div>
+    </div>
+    <div class="stat-card accent">
+      <div class="stat-label">Done</div>
+      <div class="stat-value" id="statDone">0</div>
+    </div>
+    <div class="stat-card danger">
+      <div class="stat-label">Overdue</div>
+      <div class="stat-value" id="statOverdue">0</div>
+    </div>
+    <div class="stat-card info">
+      <div class="stat-label">Today</div>
+      <div class="stat-value" id="statToday">0</div>
+    </div>
+  </div>
+
+
+  <div class="progress-wrap">
+    <div class="progress-header">
+      <span class="progress-label">Completion</span>
+      <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+
+  <div class="input-section">
+    <div class="input-row">
+      <input type="text" class="task-input" id="taskInput" placeholder="Add a new task..." autocomplete="off" maxlength="200">
+      <button class="add-btn" id="addBtn" title="Add task">+</button>
+    </div>
+    <div class="input-meta">
+      <span class="meta-label">Priority:</span>
+      <div class="priority-btns">
+        <button class="pri-btn active" data-p="low">Low</button>
+        <button class="pri-btn" data-p="med">Med</button>
+        <button class="pri-btn" data-p="high">High</button>
+      </div>
+      <span class="meta-label" style="margin-left:8px">Tag:</span>
+      <input type="text" class="tag-input" id="tagInput" placeholder="#work #personal..." maxlength="40">
+      <span class="meta-label">Due:</span>
+      <input type="date" class="due-input" id="dueInput">
+    </div>
+  </div>
+
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-f="all">All</button>
+    <button class="filter-btn" data-f="active">Active</button>
+    <button class="filter-btn" data-f="done">Done</button>
+    <button class="filter-btn" data-f="today">Today</button>
+    <button class="filter-btn" data-f="overdue">Overdue</button>
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search tasks...">
+    </div>
+  </div>
+
+
+  <div class="sort-bar">
+    <span class="sort-label">Sort:</span>
+    <button class="sort-btn active" data-s="created">Date</button>
+    <button class="sort-btn" data-s="priority">Priority</button>
+    <button class="sort-btn" data-s="due">Due</button>
+    <button class="sort-btn" data-s="alpha">A–Z</button>
+  </div>
+
+
+  <div class="tasks-section" id="taskList"></div>
+  <div class="empty-state" id="emptyState">
+    <div class="empty-glyph">∅</div>
+    <div class="empty-text">No tasks here</div>
+  </div>
+
+
+  <footer>
+    <span class="footer-text" id="footerCount">0 tasks remaining</span>
+    <button class="clear-done-btn" id="clearDoneBtn">Clear completed</button>
+  </footer>
+
+</div>
+
+
+<div class="bulk-bar" id="bulkBar">
+  <span id="bulkCount">0 selected</span>
+  <button class="bulk-action" id="bulkComplete">✓ Complete</button>
+  <button class="bulk-action del-all" id="bulkDelete">✕ Delete</button>
+  <button class="bulk-action" id="bulkDeselect" style="color:var(--muted)">✕ Deselect</button>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
