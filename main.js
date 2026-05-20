@@ -453,3 +453,132 @@ document.addEventListener("keydown", (e) => {
 });
 
 render();
+
+(function () {
+  var canvas = document.getElementById("bg-canvas");
+  if (!canvas) {
+    console.error("No canvas");
+    return;
+  }
+
+  var gl =
+    canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+  if (!gl) {
+    console.warn("WebGL unavailable");
+    canvas.style.display = "none";
+    return;
+  }
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+  }
+
+  var VS = [
+    "attribute vec2 a_pos;",
+    "void main(){gl_Position=vec4(a_pos,0.0,1.0);}",
+  ].join("\n");
+
+  var FS = [
+    "precision mediump float;",
+    "uniform vec2 u_res;",
+    "uniform float u_time;",
+
+    "float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}",
+
+    "float vnoise(vec2 p){",
+    "  vec2 i=floor(p),f=fract(p);",
+    "  f=f*f*(3.0-2.0*f);",
+    "  return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),",
+    "             mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);",
+    "}",
+
+    "float fbm(vec2 p){",
+    "  float s=0.0,a=0.5;",
+    "  for(int i=0;i<4;i++){s+=a*vnoise(p);p=mat2(1.6,1.2,-1.2,1.6)*p;a*=0.5;}",
+    "  return s;",
+    "}",
+
+    "void main(){",
+    "  vec2 uv=gl_FragCoord.xy/u_res;",
+    "  vec2 st=(uv-0.5)*vec2(u_res.x/u_res.y,1.0);",
+    "  float t=u_time*0.18;",
+
+    "  vec2 q=vec2(fbm(st*1.8+t*0.12),fbm(st*1.8+vec2(5.2,1.3)-t*0.10));",
+    "  float f=fbm(st*1.5+1.8*q+t*0.08);",
+
+    "  vec3 col=vec3(0.051,0.051,0.059);",
+
+    "  col=mix(col,vec3(0.03,0.10,0.09),smoothstep(0.2,0.7,f)*0.60);",
+
+    "  col=mix(col,vec3(0.79,0.95,0.25),smoothstep(0.55,0.80,f)*0.12);",
+
+    "  float t2=u_time*0.09;",
+    "  float o1=exp(-10.0*dot(st-vec2(0.28*sin(t2),0.20*cos(t2*0.85)),st-vec2(0.28*sin(t2),0.20*cos(t2*0.85))));",
+    "  float o2=exp(-12.0*dot(st-vec2(-0.25*cos(t2*0.75),-0.18*sin(t2*1.1)),st-vec2(-0.25*cos(t2*0.75),-0.18*sin(t2*1.1))));",
+    "  col+=vec3(0.03,0.10,0.09)*o1*0.05;",
+    "  col+=vec3(0.79,0.95,0.25)*o2*0.06;",
+
+    "  col*=1.0-smoothstep(0.25,0.82,length(uv-0.5))*0.88;",
+
+    "  gl_FragColor=vec4(clamp(col,0.0,1.0),1.0);",
+    "}",
+  ].join("\n");
+
+  function mkShader(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      console.error("Shader error:", gl.getShaderInfoLog(s));
+      return null;
+    }
+    return s;
+  }
+
+  var vs = mkShader(gl.VERTEX_SHADER, VS);
+  var fs = mkShader(gl.FRAGMENT_SHADER, FS);
+  if (!vs || !fs) {
+    canvas.style.display = "none";
+    return;
+  }
+
+  var prog = gl.createProgram();
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+    console.error("Link error:", gl.getProgramInfoLog(prog));
+    canvas.style.display = "none";
+    return;
+  }
+  gl.useProgram(prog);
+
+  var vb = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vb);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+    gl.STATIC_DRAW,
+  );
+  var aPos = gl.getAttribLocation(prog, "a_pos");
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  var uRes = gl.getUniformLocation(prog, "u_res");
+  var uTime = gl.getUniformLocation(prog, "u_time");
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  function frame(ts) {
+    gl.useProgram(prog);
+    gl.uniform1f(uTime, ts / 1000.0);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  console.log("WebGL shader running OK");
+})();
