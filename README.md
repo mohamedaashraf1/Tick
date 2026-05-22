@@ -1,6 +1,6 @@
 <div>
 
-# TICK.
+# Tick
 
 Minimal. Focused. Elegant.
 
@@ -79,14 +79,6 @@ The interface focuses on:
 - subtle shader visuals
 - minimal interaction noise
 - productivity without clutter
-
----
-
-## 📸 Preview
-
-### Main Interface
-
-<img width="1400" alt="TICK UI" src="https://github.com/user-attachments/assets/your-screenshot-here">
 
 ---
 
