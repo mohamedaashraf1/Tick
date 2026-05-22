@@ -6,7 +6,6 @@ Minimal. Focused. Elegant.
 
 A premium dark-themed productivity app built with vanilla JavaScript, featuring animated shader backgrounds, smart task management, and a clean modern UI.
 
-<img width="1400" alt="TICK Preview" src="https://github.com/user-attachments/assets/your-screenshot-here">
 
 </div>
 
