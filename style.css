@@ -1,21 +1,21 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0d0d0f;
-    --bg2: rgba(20, 20, 23, 0.72);
-    --bg3: rgba(28, 28, 33, 0.80);
-    --surface: rgba(34, 34, 40, 0.82);
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.14);
-    --text: #f0ede8;
-    --muted: #888890;
-    --hint: #555560;
-    --accent: #c9f240;
-    --accent2: #7b61ff;
-    --danger: #ff5e5e;
-    --warn: #ffb547;
-    --info: #5bc8ff;
-    --success: #4ade80;
+    --bg: #1a1a1f;
+    --bg2: rgba(32, 32, 40, 0.60);
+    --bg3: rgba(42, 42, 52, 0.70);
+    --surface: rgba(48, 48, 60, 0.75);
+    --border: rgba(200, 200, 220, 0.12);
+    --border2: rgba(200, 200, 220, 0.20);
+    --text: #e8e6e1;
+    --muted: #a0a0a8;
+    --hint: #7a7a84;
+    --accent: #d4f560;
+    --accent2: #9b7eff;
+    --danger: #ff8080;
+    --warn: #ffc480;
+    --info: #7dd9ff;
+    --success: #6dd99d;
     --radius: 12px;
     --r-sm: 6px;
   }
@@ -25,12 +25,13 @@
   body {
     background: transparent;
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    font-size: 16px;
   }
 
-
+  /* Grain overlay */
   body::before {
     content: '';
     position: fixed;
@@ -38,7 +39,7 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 1;
-    opacity: 0.5;
+    opacity: 0.35;
   }
 
   #bg-canvas {
@@ -58,7 +59,7 @@
     padding: 0 24px 80px;
   }
 
- 
+  /* ── Header ── */
   header {
     padding: 48px 0 32px;
     border-bottom: 0.5px solid var(--border2);
@@ -70,11 +71,11 @@
   }
 
   .wordmark {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(56px, 10vw, 88px);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: clamp(60px, 12vw, 100px);
     font-weight: 900;
     line-height: 0.9;
-    letter-spacing: -4px;
+    letter-spacing: -3px;
     color: var(--text);
     user-select: none;
   }
@@ -89,16 +90,16 @@
   }
 
   .date-display {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    font-weight: 300;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
+    font-size: 12px;
+    font-weight: 400;
     color: var(--muted);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     line-height: 1.8;
   }
 
-
+  /* ── Stats Row ── */
   .stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -111,12 +112,16 @@
     border: 0.5px solid var(--border);
     border-radius: var(--radius);
     padding: 16px;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
 
-  .stat-card:hover { border-color: var(--border2); }
+  .stat-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
 
   .stat-label {
     font-family: 'DM Mono', monospace;
@@ -129,8 +134,8 @@
   }
 
   .stat-value {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 34px;
     font-weight: 700;
     line-height: 1;
     color: var(--text);
@@ -140,7 +145,7 @@
   .stat-card.danger .stat-value { color: var(--danger); }
   .stat-card.info .stat-value { color: var(--info); }
 
-
+  /* ── Progress bar ── */
   .progress-wrap {
     margin-bottom: 40px;
   }
@@ -153,17 +158,17 @@
   }
 
   .progress-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
+    font-size: 12px;
     color: var(--muted);
     text-transform: uppercase;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.06em;
   }
 
   .progress-pct {
-    font-family: 'Playfair Display', serif;
-    font-size: 13px;
-    font-style: italic;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
     color: var(--accent);
   }
 
@@ -181,7 +186,7 @@
     transition: width 0.5s cubic-bezier(.4,0,.2,1);
   }
 
- 
+  /* ── Input area ── */
   .input-section {
     background: var(--bg2);
     border: 0.5px solid var(--border2);
@@ -210,8 +215,8 @@
     border: none;
     outline: none;
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
     font-weight: 400;
     line-height: 1.5;
   }
@@ -308,7 +313,7 @@
     cursor: pointer;
   }
 
- 
+  /* ── Filter bar ── */
   .filter-bar {
     display: flex;
     gap: 8px;
@@ -338,32 +343,32 @@
     margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     background: var(--bg2);
     border: 0.5px solid var(--border);
-    border-radius: 20px;
-    padding: 6px 12px;
+    border-radius: 24px;
+    padding: 8px 16px;
     transition: border-color 0.2s;
   }
 
   .search-wrap:focus-within { border-color: var(--border2); }
 
-  .search-icon { font-size: 14px; color: var(--hint); }
+  .search-icon { font-size: 16px; color: var(--hint); }
 
   .search-input {
     background: transparent;
     border: none;
     outline: none;
     color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    width: 120px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
+    font-size: 13px;
+    width: 140px;
     letter-spacing: 0.04em;
   }
 
   .search-input::placeholder { color: var(--hint); }
 
-
+  /* ── Sort bar ── */
   .sort-bar {
     display: flex;
     gap: 6px;
@@ -396,11 +401,21 @@
   .sort-btn.active { border-color: var(--border2); color: var(--muted); }
   .sort-btn:hover { color: var(--text); border-color: var(--border2); }
 
-
+  /* ── Task list ── */
   .tasks-section {
     display: flex;
     flex-direction: column;
     gap: 0;
+  }
+
+  /* Sortable drag states */
+  .sortable-ghost {
+    opacity: 0.5;
+    background: rgba(212, 245, 96, 0.1);
+  }
+
+  .sortable-drag {
+    opacity: 0.3;
   }
 
   .section-divider {
@@ -425,7 +440,7 @@
     white-space: nowrap;
   }
 
-
+  /* ── Task item ── */
   .task-item {
     display: flex;
     align-items: flex-start;
@@ -452,7 +467,7 @@
     to { opacity: 0; transform: translateX(20px); max-height: 0; padding: 0 8px; }
   }
 
-
+  /* Shake animation for duplicate input */
   @keyframes shake {
     0%,100% { transform: translateX(0); }
     20% { transform: translateX(-6px); }
@@ -462,7 +477,7 @@
   }
   .input-shake { animation: shake 0.4s ease; }
 
-
+  /* Selected task highlight */
   .task-item.selected {
     background: rgba(201, 242, 64, 0.05);
     border-radius: var(--r-sm);
@@ -505,11 +520,11 @@
   .task-body { flex: 1; min-width: 0; }
 
   .task-text {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 400;
     color: var(--text);
-    line-height: 1.5;
-    margin-bottom: 4px;
+    line-height: 1.6;
+    margin-bottom: 6px;
     word-break: break-word;
     transition: color 0.2s;
   }
@@ -602,7 +617,7 @@
   .task-action-btn.del:hover { border-color: var(--danger); color: var(--danger); }
   .task-action-btn.edit-btn:hover { border-color: var(--info); color: var(--info); }
 
-
+  /* ── Edit mode ── */
   .task-item.editing .task-text {
     display: none;
   }
@@ -614,8 +629,8 @@
     border-bottom: 1px solid var(--accent);
     outline: none;
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
     padding-bottom: 2px;
     margin-bottom: 4px;
   }
@@ -627,7 +642,7 @@
     margin-top: 4px;
   }
 
-
+  /* ── Empty state ── */
   .empty-state {
     text-align: center;
     padding: 64px 0;
@@ -637,25 +652,35 @@
   .empty-state.visible { display: block; }
 
   .empty-glyph {
-    font-family: 'Playfair Display', serif;
-    font-size: 72px;
-    font-style: italic;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 80px;
     font-weight: 900;
-    color: var(--border2);
+    color: var(--hint);
     line-height: 1;
     margin-bottom: 16px;
     user-select: none;
   }
 
   .empty-text {
-    font-family: 'DM Mono', monospace;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
     font-size: 12px;
     color: var(--hint);
     text-transform: uppercase;
     letter-spacing: 0.12em;
+    margin-bottom: 20px;
   }
 
+  .empty-hint {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    padding-top: 12px;
+    border-top: 0.5px solid var(--border);
+    display: inline-block;
+  }
 
+  /* ── Bulk actions bar ── */
   .bulk-bar {
     position: fixed;
     bottom: 32px;
@@ -697,7 +722,7 @@
   .bulk-action.del-all { color: var(--danger); border-color: rgba(255,94,94,0.3); }
   .bulk-action.del-all:hover { background: rgba(255,94,94,0.1); }
 
- 
+  /* ── Notifications ── */
   .toast {
     position: fixed;
     top: 24px;
@@ -718,7 +743,7 @@
   @keyframes toastIn  { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
 
- 
+  /* ── Footer ── */
   footer {
     margin-top: 48px;
     padding-top: 24px;
@@ -752,9 +777,19 @@
 
   .clear-done-btn:hover { border-color: var(--danger); color: var(--danger); }
 
+  /* Accessibility: reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   @media (max-width: 600px) {
     .stats { grid-template-columns: repeat(2,1fr); }
     .search-wrap { order: -1; width: 100%; }
     .filter-bar { gap: 6px; }
-    .wordmark { font-size: 52px; }
+    .wordmark { font-size: 60px; }
   }
